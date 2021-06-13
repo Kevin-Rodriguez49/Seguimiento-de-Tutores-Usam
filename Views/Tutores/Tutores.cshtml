@@ -1,0 +1,76 @@
+﻿@model Parcial_Tutores.Models.Tutoria
+@{
+    ViewBag.Title = "Tutores";
+}
+
+<h2>Segumiento de tutores usam</h2>
+<img src="~/img/Usam.jpg" alt="" height="200" width="950" />
+<h1><center><b>Seguimiento de Tutores Usam</b></center></h1>
+<img src="~/img/UsamLogo.png" />
+<br /><br />
+
+<!doctype html>
+<html>
+<head>
+    <title>Tutores</title>
+</head>
+<body>
+    @using (Html.BeginForm(null, null, FormMethod.Get))
+    {
+        <fieldset>
+            <legend>Criterios de búsqueda</legend>
+            @Html.Label("Buscar", "Nombre Alumno:")
+            @Html.TextBox("Buscar")
+            @Html.Label("Facultades", "Facultad:")
+            @Html.TextBox("Facultad")
+            @Html.Label("Carreras", "NombreCarrera")
+            @Html.TextBox("NombreCarrera")
+            @Html.Label("Materias", "NombreMateria:")
+            @Html.TextBox("NombreMateria")
+
+            <input type="button" onclick="document.location.href='@Url.Content("~/Tutores/Tutor/")'" name="Buscar" value="Buscar" class="btn btn-success" />
+        </fieldset>
+    }
+    <h2>Segumiento de tutores usam</h2>
+    <hr />
+    <form action="#" method="post">
+        <fieldset>
+            <legend>Información de los tutores</legend>
+            <div>
+                <label for="Usuario">Nombre del Tutor:</label>
+                <input id="Usuario" type="text" name="Usuario" />
+            </div>
+            <div>
+                <label for="Usuario">Apellido del Tutor:</label>
+                <input id="Usuario" type="text" name="Usuario" />
+            </div>
+            <div>
+                <label for="Usuario">Nombre del Catedratico:</label>
+                <input id="Usuario" type="text" name="Usuario" />
+            </div>
+            <div class="form-group">
+                <label for="Usuario">Nombre de la Facultad:</label>
+                @Html.TextBox("Facultad")
+            </div>
+            <div>
+                <label for="Usuario">Nombre de la Carrera:</label>
+                @Html.TextBox("NombreCarrera")
+            </div>
+            <div>
+                <label for="Usuario">Nombre de la Materia:</label>
+                @Html.TextBox("NombreMateria")
+            </div>
+            <div>
+                <label for="Usuario">Dia de la Clase:</label>
+                <input id="Usuario" type="date" name="Usuario" />
+            </div>
+            <div>
+                <label for="Usuario">Horario de la Clase:</label>
+                <input id="Usuario" type="datetime" />
+            </div>
+           <input type="button" onclick="document.location.href='@Url.Content("~/Tutores/Tutor/")'" name="Enviar" value="Enviar" class="btn btn-success"/>
+        </fieldset>
+    </form>
+</body>
+</html>
+
