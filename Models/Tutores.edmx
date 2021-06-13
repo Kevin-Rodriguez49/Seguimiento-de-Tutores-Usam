@@ -1,0 +1,625 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="TutoresModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Carreras">
+          <Key>
+            <PropertyRef Name="IdCarrera" />
+          </Key>
+          <Property Name="IdCarrera" Type="int" Nullable="false" />
+          <Property Name="NombreCarrera" Type="nvarchar" MaxLength="100" />
+          <Property Name="Facultad" Type="nvarchar" MaxLength="100" />
+          <Property Name="IdMaestro" Type="int" />
+        </EntityType>
+        <EntityType Name="Maestros">
+          <Key>
+            <PropertyRef Name="IdMaestro" />
+          </Key>
+          <Property Name="IdMaestro" Type="int" Nullable="false" />
+          <Property Name="NombreMaestro" Type="nvarchar" MaxLength="100" />
+          <Property Name="Facultad" Type="nvarchar" MaxLength="100" />
+          <Property Name="IdTutor" Type="int" />
+        </EntityType>
+        <EntityType Name="Materias">
+          <Key>
+            <PropertyRef Name="IdMateria" />
+          </Key>
+          <Property Name="IdMateria" Type="int" Nullable="false" />
+          <Property Name="NombreMateria" Type="nvarchar" MaxLength="100" />
+          <Property Name="IdCarrera" Type="int" />
+        </EntityType>
+        <EntityType Name="Rol_BD">
+          <Key>
+            <PropertyRef Name="IdRolBD" />
+          </Key>
+          <Property Name="IdRolBD" Type="int" Nullable="false" />
+          <Property Name="Descripcion" Type="text" />
+          <Property Name="IdRolServidor" Type="int" />
+        </EntityType>
+        <EntityType Name="Rol_Servidor">
+          <Key>
+            <PropertyRef Name="IdRolServidor" />
+          </Key>
+          <Property Name="IdRolServidor" Type="int" Nullable="false" />
+          <Property Name="Descripcion" Type="text" />
+          <Property Name="IdTipoUsuario" Type="int" />
+        </EntityType>
+        <EntityType Name="Tipo_Usuario">
+          <Key>
+            <PropertyRef Name="IdTipoUsuario" />
+          </Key>
+          <Property Name="IdTipoUsuario" Type="int" Nullable="false" />
+          <Property Name="Descripcion" Type="text" />
+          <Property Name="IdTutor" Type="int" />
+        </EntityType>
+        <EntityType Name="Tutor">
+          <Key>
+            <PropertyRef Name="IdTutor" />
+          </Key>
+          <Property Name="IdTutor" Type="int" Nullable="false" />
+          <Property Name="NombreTutor" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="IdUsuario" />
+          </Key>
+          <Property Name="IdUsuario" Type="int" Nullable="false" />
+          <Property Name="Usuario" Type="nvarchar" MaxLength="250" />
+          <Property Name="Contraseña" Type="nvarchar" MaxLength="250" />
+          <Property Name="Fecha" Type="date" />
+        </EntityType>
+        <EntityType Name="Usuario_Rol_BD">
+          <Key>
+            <PropertyRef Name="IdUsuarioRolBd" />
+          </Key>
+          <Property Name="IdUsuarioRolBd" Type="int" Nullable="false" />
+          <Property Name="IdUsuarioRolServidor" Type="int" />
+          <Property Name="IdUsuario" Type="int" />
+        </EntityType>
+        <EntityType Name="Usuario_Rol_Servidor">
+          <Key>
+            <PropertyRef Name="IdUsuarioRolServidor" />
+          </Key>
+          <Property Name="IdUsuarioRolServidor" Type="int" Nullable="false" />
+          <Property Name="IdRolBD" Type="int" />
+        </EntityType>
+        <Association Name="fk_Carreras">
+          <End Role="Carreras" Type="Self.Carreras" Multiplicity="0..1" />
+          <End Role="Materias" Type="Self.Materias" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Carreras">
+              <PropertyRef Name="IdCarrera" />
+            </Principal>
+            <Dependent Role="Materias">
+              <PropertyRef Name="IdCarrera" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Maestros">
+          <End Role="Maestros" Type="Self.Maestros" Multiplicity="0..1" />
+          <End Role="Carreras" Type="Self.Carreras" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Maestros">
+              <PropertyRef Name="IdMaestro" />
+            </Principal>
+            <Dependent Role="Carreras">
+              <PropertyRef Name="IdMaestro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_RolBD">
+          <End Role="Rol_BD" Type="Self.Rol_BD" Multiplicity="0..1" />
+          <End Role="Usuario_Rol_Servidor" Type="Self.Usuario_Rol_Servidor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rol_BD">
+              <PropertyRef Name="IdRolBD" />
+            </Principal>
+            <Dependent Role="Usuario_Rol_Servidor">
+              <PropertyRef Name="IdRolBD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_RolServidor">
+          <End Role="Rol_Servidor" Type="Self.Rol_Servidor" Multiplicity="0..1" />
+          <End Role="Rol_BD" Type="Self.Rol_BD" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rol_Servidor">
+              <PropertyRef Name="IdRolServidor" />
+            </Principal>
+            <Dependent Role="Rol_BD">
+              <PropertyRef Name="IdRolServidor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_TipoUsuario">
+          <End Role="Tipo_Usuario" Type="Self.Tipo_Usuario" Multiplicity="0..1" />
+          <End Role="Rol_Servidor" Type="Self.Rol_Servidor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tipo_Usuario">
+              <PropertyRef Name="IdTipoUsuario" />
+            </Principal>
+            <Dependent Role="Rol_Servidor">
+              <PropertyRef Name="IdTipoUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Tutor">
+          <End Role="Tutor" Type="Self.Tutor" Multiplicity="0..1" />
+          <End Role="Maestros" Type="Self.Maestros" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tutor">
+              <PropertyRef Name="IdTutor" />
+            </Principal>
+            <Dependent Role="Maestros">
+              <PropertyRef Name="IdTutor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Tutor2">
+          <End Role="Tutor" Type="Self.Tutor" Multiplicity="0..1" />
+          <End Role="Tipo_Usuario" Type="Self.Tipo_Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tutor">
+              <PropertyRef Name="IdTutor" />
+            </Principal>
+            <Dependent Role="Tipo_Usuario">
+              <PropertyRef Name="IdTutor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Usuario_Rol_BD">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Usuario1" Type="Self.Usuario" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="Usuario1">
+              <PropertyRef Name="IdUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_UsuarioRolBD">
+          <End Role="Usuario_Rol_Servidor" Type="Self.Usuario_Rol_Servidor" Multiplicity="0..1" />
+          <End Role="Usuario_Rol_BD" Type="Self.Usuario_Rol_BD" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario_Rol_Servidor">
+              <PropertyRef Name="IdUsuarioRolServidor" />
+            </Principal>
+            <Dependent Role="Usuario_Rol_BD">
+              <PropertyRef Name="IdUsuarioRolServidor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TutoresModelStoreContainer">
+          <EntitySet Name="Carreras" EntityType="Self.Carreras" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Maestros" EntityType="Self.Maestros" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Materias" EntityType="Self.Materias" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Rol_BD" EntityType="Self.Rol_BD" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Rol_Servidor" EntityType="Self.Rol_Servidor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tipo_Usuario" EntityType="Self.Tipo_Usuario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tutor" EntityType="Self.Tutor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuario_Rol_BD" EntityType="Self.Usuario_Rol_BD" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuario_Rol_Servidor" EntityType="Self.Usuario_Rol_Servidor" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="fk_Carreras" Association="Self.fk_Carreras">
+            <End Role="Carreras" EntitySet="Carreras" />
+            <End Role="Materias" EntitySet="Materias" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Maestros" Association="Self.fk_Maestros">
+            <End Role="Maestros" EntitySet="Maestros" />
+            <End Role="Carreras" EntitySet="Carreras" />
+          </AssociationSet>
+          <AssociationSet Name="fk_RolBD" Association="Self.fk_RolBD">
+            <End Role="Rol_BD" EntitySet="Rol_BD" />
+            <End Role="Usuario_Rol_Servidor" EntitySet="Usuario_Rol_Servidor" />
+          </AssociationSet>
+          <AssociationSet Name="fk_RolServidor" Association="Self.fk_RolServidor">
+            <End Role="Rol_Servidor" EntitySet="Rol_Servidor" />
+            <End Role="Rol_BD" EntitySet="Rol_BD" />
+          </AssociationSet>
+          <AssociationSet Name="fk_TipoUsuario" Association="Self.fk_TipoUsuario">
+            <End Role="Tipo_Usuario" EntitySet="Tipo_Usuario" />
+            <End Role="Rol_Servidor" EntitySet="Rol_Servidor" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Tutor" Association="Self.fk_Tutor">
+            <End Role="Tutor" EntitySet="Tutor" />
+            <End Role="Maestros" EntitySet="Maestros" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Tutor2" Association="Self.fk_Tutor2">
+            <End Role="Tutor" EntitySet="Tutor" />
+            <End Role="Tipo_Usuario" EntitySet="Tipo_Usuario" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Usuario_Rol_BD" Association="Self.fk_Usuario_Rol_BD">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Usuario1" EntitySet="Usuario" />
+          </AssociationSet>
+          <AssociationSet Name="fk_UsuarioRolBD" Association="Self.fk_UsuarioRolBD">
+            <End Role="Usuario_Rol_Servidor" EntitySet="Usuario_Rol_Servidor" />
+            <End Role="Usuario_Rol_BD" EntitySet="Usuario_Rol_BD" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TutoresModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Carreras">
+          <Key>
+            <PropertyRef Name="IdCarrera" />
+          </Key>
+          <Property Name="IdCarrera" Type="Int32" Nullable="false" />
+          <Property Name="NombreCarrera" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Facultad" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="IdMaestro" Type="Int32" />
+          <NavigationProperty Name="Materias" Relationship="Self.fk_Carreras" FromRole="Carreras" ToRole="Materias" />
+          <NavigationProperty Name="Maestros" Relationship="Self.fk_Maestros" FromRole="Carreras" ToRole="Maestros" />
+        </EntityType>
+        <EntityType Name="Maestros">
+          <Key>
+            <PropertyRef Name="IdMaestro" />
+          </Key>
+          <Property Name="IdMaestro" Type="Int32" Nullable="false" />
+          <Property Name="NombreMaestro" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Facultad" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="IdTutor" Type="Int32" />
+          <NavigationProperty Name="Carreras" Relationship="Self.fk_Maestros" FromRole="Maestros" ToRole="Carreras" />
+          <NavigationProperty Name="Tutor" Relationship="Self.fk_Tutor" FromRole="Maestros" ToRole="Tutor" />
+        </EntityType>
+        <EntityType Name="Materias">
+          <Key>
+            <PropertyRef Name="IdMateria" />
+          </Key>
+          <Property Name="IdMateria" Type="Int32" Nullable="false" />
+          <Property Name="NombreMateria" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="IdCarrera" Type="Int32" />
+          <NavigationProperty Name="Carreras" Relationship="Self.fk_Carreras" FromRole="Materias" ToRole="Carreras" />
+        </EntityType>
+        <EntityType Name="Rol_BD">
+          <Key>
+            <PropertyRef Name="IdRolBD" />
+          </Key>
+          <Property Name="IdRolBD" Type="Int32" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IdRolServidor" Type="Int32" />
+          <NavigationProperty Name="Usuario_Rol_Servidor" Relationship="Self.fk_RolBD" FromRole="Rol_BD" ToRole="Usuario_Rol_Servidor" />
+          <NavigationProperty Name="Rol_Servidor" Relationship="Self.fk_RolServidor" FromRole="Rol_BD" ToRole="Rol_Servidor" />
+        </EntityType>
+        <EntityType Name="Rol_Servidor">
+          <Key>
+            <PropertyRef Name="IdRolServidor" />
+          </Key>
+          <Property Name="IdRolServidor" Type="Int32" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IdTipoUsuario" Type="Int32" />
+          <NavigationProperty Name="Rol_BD" Relationship="Self.fk_RolServidor" FromRole="Rol_Servidor" ToRole="Rol_BD" />
+          <NavigationProperty Name="Tipo_Usuario" Relationship="Self.fk_TipoUsuario" FromRole="Rol_Servidor" ToRole="Tipo_Usuario" />
+        </EntityType>
+        <EntityType Name="Tipo_Usuario">
+          <Key>
+            <PropertyRef Name="IdTipoUsuario" />
+          </Key>
+          <Property Name="IdTipoUsuario" Type="Int32" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IdTutor" Type="Int32" />
+          <NavigationProperty Name="Rol_Servidor" Relationship="Self.fk_TipoUsuario" FromRole="Tipo_Usuario" ToRole="Rol_Servidor" />
+          <NavigationProperty Name="Tutor" Relationship="Self.fk_Tutor2" FromRole="Tipo_Usuario" ToRole="Tutor" />
+        </EntityType>
+        <EntityType Name="Tutor">
+          <Key>
+            <PropertyRef Name="IdTutor" />
+          </Key>
+          <Property Name="IdTutor" Type="Int32" Nullable="false" />
+          <Property Name="NombreTutor" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Maestros" Relationship="Self.fk_Tutor" FromRole="Tutor" ToRole="Maestros" />
+          <NavigationProperty Name="Tipo_Usuario" Relationship="Self.fk_Tutor2" FromRole="Tutor" ToRole="Tipo_Usuario" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="IdUsuario" />
+          </Key>
+          <Property Name="IdUsuario" Type="Int32" Nullable="false" />
+          <Property Name="Usuario1" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Contraseña" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Fecha" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Usuario11" Relationship="Self.fk_Usuario_Rol_BD" FromRole="Usuario" ToRole="Usuario1" />
+          <NavigationProperty Name="Usuario2" Relationship="Self.fk_Usuario_Rol_BD" FromRole="Usuario1" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="Usuario_Rol_BD">
+          <Key>
+            <PropertyRef Name="IdUsuarioRolBd" />
+          </Key>
+          <Property Name="IdUsuarioRolBd" Type="Int32" Nullable="false" />
+          <Property Name="IdUsuarioRolServidor" Type="Int32" />
+          <Property Name="IdUsuario" Type="Int32" />
+          <NavigationProperty Name="Usuario_Rol_Servidor" Relationship="Self.fk_UsuarioRolBD" FromRole="Usuario_Rol_BD" ToRole="Usuario_Rol_Servidor" />
+        </EntityType>
+        <EntityType Name="Usuario_Rol_Servidor">
+          <Key>
+            <PropertyRef Name="IdUsuarioRolServidor" />
+          </Key>
+          <Property Name="IdUsuarioRolServidor" Type="Int32" Nullable="false" />
+          <Property Name="IdRolBD" Type="Int32" />
+          <NavigationProperty Name="Rol_BD" Relationship="Self.fk_RolBD" FromRole="Usuario_Rol_Servidor" ToRole="Rol_BD" />
+          <NavigationProperty Name="Usuario_Rol_BD" Relationship="Self.fk_UsuarioRolBD" FromRole="Usuario_Rol_Servidor" ToRole="Usuario_Rol_BD" />
+        </EntityType>
+        <Association Name="fk_Carreras">
+          <End Role="Carreras" Type="Self.Carreras" Multiplicity="0..1" />
+          <End Role="Materias" Type="Self.Materias" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Carreras">
+              <PropertyRef Name="IdCarrera" />
+            </Principal>
+            <Dependent Role="Materias">
+              <PropertyRef Name="IdCarrera" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Maestros">
+          <End Role="Maestros" Type="Self.Maestros" Multiplicity="0..1" />
+          <End Role="Carreras" Type="Self.Carreras" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Maestros">
+              <PropertyRef Name="IdMaestro" />
+            </Principal>
+            <Dependent Role="Carreras">
+              <PropertyRef Name="IdMaestro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Tutor">
+          <End Role="Tutor" Type="Self.Tutor" Multiplicity="0..1" />
+          <End Role="Maestros" Type="Self.Maestros" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tutor">
+              <PropertyRef Name="IdTutor" />
+            </Principal>
+            <Dependent Role="Maestros">
+              <PropertyRef Name="IdTutor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_RolBD">
+          <End Role="Rol_BD" Type="Self.Rol_BD" Multiplicity="0..1" />
+          <End Role="Usuario_Rol_Servidor" Type="Self.Usuario_Rol_Servidor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rol_BD">
+              <PropertyRef Name="IdRolBD" />
+            </Principal>
+            <Dependent Role="Usuario_Rol_Servidor">
+              <PropertyRef Name="IdRolBD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_RolServidor">
+          <End Role="Rol_Servidor" Type="Self.Rol_Servidor" Multiplicity="0..1" />
+          <End Role="Rol_BD" Type="Self.Rol_BD" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rol_Servidor">
+              <PropertyRef Name="IdRolServidor" />
+            </Principal>
+            <Dependent Role="Rol_BD">
+              <PropertyRef Name="IdRolServidor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_TipoUsuario">
+          <End Role="Tipo_Usuario" Type="Self.Tipo_Usuario" Multiplicity="0..1" />
+          <End Role="Rol_Servidor" Type="Self.Rol_Servidor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tipo_Usuario">
+              <PropertyRef Name="IdTipoUsuario" />
+            </Principal>
+            <Dependent Role="Rol_Servidor">
+              <PropertyRef Name="IdTipoUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Tutor2">
+          <End Role="Tutor" Type="Self.Tutor" Multiplicity="0..1" />
+          <End Role="Tipo_Usuario" Type="Self.Tipo_Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tutor">
+              <PropertyRef Name="IdTutor" />
+            </Principal>
+            <Dependent Role="Tipo_Usuario">
+              <PropertyRef Name="IdTutor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Usuario_Rol_BD">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Usuario1" Type="Self.Usuario" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="Usuario1">
+              <PropertyRef Name="IdUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_UsuarioRolBD">
+          <End Role="Usuario_Rol_Servidor" Type="Self.Usuario_Rol_Servidor" Multiplicity="0..1" />
+          <End Role="Usuario_Rol_BD" Type="Self.Usuario_Rol_BD" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario_Rol_Servidor">
+              <PropertyRef Name="IdUsuarioRolServidor" />
+            </Principal>
+            <Dependent Role="Usuario_Rol_BD">
+              <PropertyRef Name="IdUsuarioRolServidor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TutoresEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Carreras" EntityType="Self.Carreras" />
+          <EntitySet Name="Maestros" EntityType="Self.Maestros" />
+          <EntitySet Name="Materias" EntityType="Self.Materias" />
+          <EntitySet Name="Rol_BD" EntityType="Self.Rol_BD" />
+          <EntitySet Name="Rol_Servidor" EntityType="Self.Rol_Servidor" />
+          <EntitySet Name="Tipo_Usuario" EntityType="Self.Tipo_Usuario" />
+          <EntitySet Name="Tutor" EntityType="Self.Tutor" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" />
+          <EntitySet Name="Usuario_Rol_BD" EntityType="Self.Usuario_Rol_BD" />
+          <EntitySet Name="Usuario_Rol_Servidor" EntityType="Self.Usuario_Rol_Servidor" />
+          <AssociationSet Name="fk_Carreras" Association="Self.fk_Carreras">
+            <End Role="Carreras" EntitySet="Carreras" />
+            <End Role="Materias" EntitySet="Materias" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Maestros" Association="Self.fk_Maestros">
+            <End Role="Maestros" EntitySet="Maestros" />
+            <End Role="Carreras" EntitySet="Carreras" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Tutor" Association="Self.fk_Tutor">
+            <End Role="Tutor" EntitySet="Tutor" />
+            <End Role="Maestros" EntitySet="Maestros" />
+          </AssociationSet>
+          <AssociationSet Name="fk_RolBD" Association="Self.fk_RolBD">
+            <End Role="Rol_BD" EntitySet="Rol_BD" />
+            <End Role="Usuario_Rol_Servidor" EntitySet="Usuario_Rol_Servidor" />
+          </AssociationSet>
+          <AssociationSet Name="fk_RolServidor" Association="Self.fk_RolServidor">
+            <End Role="Rol_Servidor" EntitySet="Rol_Servidor" />
+            <End Role="Rol_BD" EntitySet="Rol_BD" />
+          </AssociationSet>
+          <AssociationSet Name="fk_TipoUsuario" Association="Self.fk_TipoUsuario">
+            <End Role="Tipo_Usuario" EntitySet="Tipo_Usuario" />
+            <End Role="Rol_Servidor" EntitySet="Rol_Servidor" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Tutor2" Association="Self.fk_Tutor2">
+            <End Role="Tutor" EntitySet="Tutor" />
+            <End Role="Tipo_Usuario" EntitySet="Tipo_Usuario" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Usuario_Rol_BD" Association="Self.fk_Usuario_Rol_BD">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Usuario1" EntitySet="Usuario" />
+          </AssociationSet>
+          <AssociationSet Name="fk_UsuarioRolBD" Association="Self.fk_UsuarioRolBD">
+            <End Role="Usuario_Rol_Servidor" EntitySet="Usuario_Rol_Servidor" />
+            <End Role="Usuario_Rol_BD" EntitySet="Usuario_Rol_BD" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TutoresModelStoreContainer" CdmEntityContainer="TutoresEntities">
+          <EntitySetMapping Name="Carreras">
+            <EntityTypeMapping TypeName="TutoresModel.Carreras">
+              <MappingFragment StoreEntitySet="Carreras">
+                <ScalarProperty Name="IdCarrera" ColumnName="IdCarrera" />
+                <ScalarProperty Name="NombreCarrera" ColumnName="NombreCarrera" />
+                <ScalarProperty Name="Facultad" ColumnName="Facultad" />
+                <ScalarProperty Name="IdMaestro" ColumnName="IdMaestro" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Maestros">
+            <EntityTypeMapping TypeName="TutoresModel.Maestros">
+              <MappingFragment StoreEntitySet="Maestros">
+                <ScalarProperty Name="IdMaestro" ColumnName="IdMaestro" />
+                <ScalarProperty Name="NombreMaestro" ColumnName="NombreMaestro" />
+                <ScalarProperty Name="Facultad" ColumnName="Facultad" />
+                <ScalarProperty Name="IdTutor" ColumnName="IdTutor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Materias">
+            <EntityTypeMapping TypeName="TutoresModel.Materias">
+              <MappingFragment StoreEntitySet="Materias">
+                <ScalarProperty Name="IdMateria" ColumnName="IdMateria" />
+                <ScalarProperty Name="NombreMateria" ColumnName="NombreMateria" />
+                <ScalarProperty Name="IdCarrera" ColumnName="IdCarrera" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rol_BD">
+            <EntityTypeMapping TypeName="TutoresModel.Rol_BD">
+              <MappingFragment StoreEntitySet="Rol_BD">
+                <ScalarProperty Name="IdRolBD" ColumnName="IdRolBD" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="IdRolServidor" ColumnName="IdRolServidor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rol_Servidor">
+            <EntityTypeMapping TypeName="TutoresModel.Rol_Servidor">
+              <MappingFragment StoreEntitySet="Rol_Servidor">
+                <ScalarProperty Name="IdRolServidor" ColumnName="IdRolServidor" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="IdTipoUsuario" ColumnName="IdTipoUsuario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tipo_Usuario">
+            <EntityTypeMapping TypeName="TutoresModel.Tipo_Usuario">
+              <MappingFragment StoreEntitySet="Tipo_Usuario">
+                <ScalarProperty Name="IdTipoUsuario" ColumnName="IdTipoUsuario" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="IdTutor" ColumnName="IdTutor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tutor">
+            <EntityTypeMapping TypeName="TutoresModel.Tutor">
+              <MappingFragment StoreEntitySet="Tutor">
+                <ScalarProperty Name="IdTutor" ColumnName="IdTutor" />
+                <ScalarProperty Name="NombreTutor" ColumnName="NombreTutor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuario">
+            <EntityTypeMapping TypeName="TutoresModel.Usuario">
+              <MappingFragment StoreEntitySet="Usuario">
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+                <ScalarProperty Name="Usuario1" ColumnName="Usuario" />
+                <ScalarProperty Name="Contraseña" ColumnName="Contraseña" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuario_Rol_BD">
+            <EntityTypeMapping TypeName="TutoresModel.Usuario_Rol_BD">
+              <MappingFragment StoreEntitySet="Usuario_Rol_BD">
+                <ScalarProperty Name="IdUsuarioRolBd" ColumnName="IdUsuarioRolBd" />
+                <ScalarProperty Name="IdUsuarioRolServidor" ColumnName="IdUsuarioRolServidor" />
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuario_Rol_Servidor">
+            <EntityTypeMapping TypeName="TutoresModel.Usuario_Rol_Servidor">
+              <MappingFragment StoreEntitySet="Usuario_Rol_Servidor">
+                <ScalarProperty Name="IdUsuarioRolServidor" ColumnName="IdUsuarioRolServidor" />
+                <ScalarProperty Name="IdRolBD" ColumnName="IdRolBD" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
